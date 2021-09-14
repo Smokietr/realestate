@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::namespace('Auth')->prefix('auth')->group(function () {
+    Route::resource('login', 'LoginController')->only('store');
+    Route::resource('register', 'RegisterController')->only('store');
 });
