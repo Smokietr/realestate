@@ -19,7 +19,6 @@ class CreateCalendarsTable extends Migration
             $table->integer('consultant');
             $table->string('address');
             $table->string('code')->comment('Post Code');
-            $table->dateTime('date');
             $table->dateTime('arrive_time');
             $table->dateTime('turnaround_time');
             $table->integer('distance');
