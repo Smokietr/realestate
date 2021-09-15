@@ -24,7 +24,7 @@ class IndexRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'sometimes|in:all,success,waiting,cancel',
+            'status' => 'sometimes|in:all,success,waiting,cancel',
             'started' => 'sometimes|date_format:Y-m-d',
             'finished' => 'sometimes|date_format:Y-m-d|after:started',
             'page' => 'sometimes|integer|min:1'

@@ -27,7 +27,8 @@ class UpdateRequest extends FormRequest
             'customer' => 'sometimes|integer|exists:customers,id',
             'address' => 'sometimes|string|min:3|max:191',
             'code' => 'sometimes|string',
-            'mode' => 'sometimes|string|in:driving,bicycling,transit,walking'
+            'mode' => 'sometimes|string|in:driving,bicycling,transit,walking',
+            'status' => 'sometimes|in:success,waiting,cancel'
         ];
     }
 }

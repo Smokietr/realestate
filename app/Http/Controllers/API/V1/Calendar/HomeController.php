@@ -9,7 +9,6 @@ use App\Http\Requests\API\V1\Calendar\StoreRequest;
 use App\Http\Requests\API\V1\Calendar\UpdateRequest;
 use App\Http\Resources\API\V1\Calendar\IndexResource;
 use App\Models\Calendar;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -29,7 +28,7 @@ class HomeController extends Controller
     {
         $query = Calendar::withOutGlobalScopes();
 
-        $request->whenHas('type', function ($type) use ($query) {
+        $request->whenHas('status', function ($type) use ($query) {
             if($type != 'all') {
                 return $query->where('status', '=', $type);
             }
@@ -89,7 +88,7 @@ class HomeController extends Controller
         });
 
         return $repository->update($calendar, $request->only(
-            ['customer', 'address']
+            ['customer', 'address', 'status']
         ));
     }
 
