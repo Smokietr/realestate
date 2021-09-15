@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
@@ -65,5 +66,15 @@ class Handler extends ExceptionHandler
 
     protected function failedValidation(Validator $validator) {
         throw new HttpResponseException($this->failed($validator->errors()->all(), 422));
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof ModelNotFoundException) {
+            $model = app($exception->getModel());
+            return $this->failed([method_exists($model, 'notFoundMessage') ? $model->notFoundMessage() : 'Not Found'], 404);
+        }
+
+        return parent::render($request, $exception);
     }
 }
