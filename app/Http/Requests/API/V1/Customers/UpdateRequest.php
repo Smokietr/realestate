@@ -26,7 +26,7 @@ class UpdateRequest extends FormRequest
         return [
             'name' => 'sometimes|string|min:3|max:10',
             'lastname' => 'sometimes|string|min:3|max:10',
-            'email' => 'sometimes|email|unique:customers,email',
+            'email' => 'sometimes|email|unique:customers,email,'. $this->id . ',id',
             'phone' => 'sometimes|digits:10'
         ];
     }

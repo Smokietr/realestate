@@ -18,7 +18,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return $this->success(IndexResource::collection(Customers::all()));
+        return $this->success(IndexResource::collection(Customers::paginate(10)));
     }
 
     /**
