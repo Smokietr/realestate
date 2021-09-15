@@ -1,1 +1,1 @@
-# realestate
+# Geliştirmeler master branchındadır.
