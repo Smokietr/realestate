@@ -41,8 +41,8 @@ trait JSONResponseTrait
         ];
 
         if(!is_null($errors) && (is_array($errors) || is_object($errors))) {
-            foreach ($errors as $error) {
-                $response['error']['message'][] = $error;
+            foreach ($errors as $k => $error) {
+                $response['error']['message'][$k] = $error;
             }
         }
 
