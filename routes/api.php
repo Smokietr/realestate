@@ -14,7 +14,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+//Development
+Route::get('route', function () {
+    dd(Route::getRoutes());
+});
+
+// Auth
 Route::namespace('Auth')->prefix('auth')->group(function () {
-    Route::resource('login', 'LoginController')->only('store');
-    Route::resource('register', 'RegisterController')->only('store');
+    Route::post('/sign-in', 'RegisterController@store')->name('register');
+    Route::post('/login', 'LoginController@store')->name('login');
+    Route::get('/logout', 'LoginController@logout')->name('logout');
+    Route::get('/me', 'HomeController@index')->name('me');
+});
+
+Route::namespace('Calendar')->middleware('auth:sanctum')->group(function () {
+    Route::resource('/calendar', 'HomeController');
+});
+
+Route::namespace('Customers')->middleware('auth:sanctum')->group(function () {
+    Route::resource('/customer', 'HomeController');
 });
