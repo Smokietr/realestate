@@ -9,6 +9,11 @@ class AuthResource extends JsonResource
 {
     protected $user, $login;
 
+    /**
+     * @param $id
+     * @return bool|\Illuminate\Contracts\Auth\Authenticatable
+    */
+
     protected function login($id) {
         return auth()->loginUsingId($id);
     }
@@ -24,10 +29,9 @@ class AuthResource extends JsonResource
         $this->login = $this->login($this->id);
 
         return [
-            'username' => $this->login->username,
             'email' => $this->login->email,
             'token' => [
-                'code' => 'Bearer ' . $this->login->createToken('authToken')->accessToken,
+                'code' => 'Bearer ' . $this->login->createToken('authToken')->plainTextToken,
                 'expire' => Carbon::now()->addWeeks(1)
             ],
             'rememberToken' => $this->login->remember_token
