@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1\Calendar;
 
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\LocationRepository;
+use App\Http\Requests\API\V1\Calendar\IndexRequest;
 use App\Http\Requests\API\V1\Calendar\StoreRequest;
 use App\Http\Requests\API\V1\Calendar\UpdateRequest;
 use App\Http\Resources\API\V1\Calendar\IndexResource;
@@ -24,9 +25,25 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(IndexRequest $request)
     {
-        return $this->success(IndexResource::collection(Calendar::paginate(10)));
+        $query = Calendar::withOutGlobalScopes();
+
+        $request->whenHas('type', function ($type) use ($query) {
+            if($type != 'all') {
+                return $query->where('status', '=', $type);
+            }
+        });
+
+        $request->whenHas('started', function ($started) use ($query) {
+            return $query->where('arrive_time', '>=', $started);
+        });
+
+        $request->whenHas('finished', function ($finished) use ($query) {
+            return $query->where('arrive_time', '<=', $finished);
+        });
+
+        return $this->success(IndexResource::collection($query->paginate(10)));
     }
 
     /**
